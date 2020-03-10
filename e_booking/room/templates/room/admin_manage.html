@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>จัดการสถานที่</h1>
+<br>
+<form method="GET" action="{% url 'manage' %}" style="margin-bottom: 50px;">
+    <div class="form-row">
+        <div class="col">
+            <label for="inputSearch">ค้นหาชื่อห้อง</label>
+            <input type="text" class="form-control mb-2" placeholder="ชื่อห้อง" name="room_name">
+        </div>
+        <button type="submit" value="Select" class="btn btn-primary ml-3"
+            style="margin-right: 20px; margin-top: 20px; width: 80px; height: 60px;">ค้นหา</button>
+
+        <a href="{% url 'edit_add' 0 %}" style="margin-top: 20px; width: 150px; height:60px; padding-top: 17px"
+            class="btn btn-success">สร้างห้อง</a>
+        <div class="col"></div>
+    </div>
+</form>
+
+
+<table class="table" style="text-align: center;">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ชื่อห้อง</th>
+            <th scope="col">เวลาเปิด</th>
+            <th scope="col">เวลาปิด</th>
+            <th scope="col">ความจุ</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in room %}
+        <tr>
+            <td>{{ r.name }}</th>
+            <td>{{ r.open_time|time:'H:i' }} น.</td>
+            <td>{{ r.close_time|time:'H:i ' }} น.</td>
+            <td>{{ r.capacity }} คน</td>
+            <td style="width:20%;">
+                <a href="{% url 'edit_add' r.room_id %}" class="btn btn-warning">แก้ไข</a>
+                <a href="{% url 'delete_room' r.room_id %}" class="btn btn-danger">ลบ</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

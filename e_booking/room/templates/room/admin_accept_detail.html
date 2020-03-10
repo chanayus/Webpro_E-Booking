@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h1>รายละเอียดการขอจองห้อง</h1><br>
+{% if success %}
+<div class="alert alert-success" role="alert">
+    <p style="margin:0;">{{ success }}</p>
+</div>
+{% else %}
+{% endif %}
+<ul style="font-size: 20px;">
+    <li>ชื่อผู้ใช้ที่ขอจอง : {{ user_book.username }}</li>
+    <li>ห้องที่ขอจอง : {{booking.room.name}}</li>
+    <li>วันที่ขอจอง : {{booking.date|date:'d M Y'}}</li>
+    <li>เวลาที่จอง : {{booking.start_time|time:'H:i'}} น. - {{booking.end_time|time:'H:i'}} น.</li>
+    <li>เหตุผลการใช้งาน : {{booking.description}}</li>
+    {% if booking.status == 'อนุมัติ' %}
+    <li>สถานะ : <span class="alert alert-success" style="height: 30px; padding: 0; padding-top: 3px;"
+            role="alert">{{ booking.status }}</span></li>
+    {% elif booking.status == 'ปฏิเสธ' %}
+    <li>สถานะ : <span class="alert alert-danger" style="height: 30px; padding: 0; padding-top: 3px;"
+            role="alert">{{ booking.status }}</span></li>
+    {% else %}
+    <li>สถานะ : <span class="alert alert-warning" style="height: 30px; padding: 0; padding-top: 3px; width: 12%"
+            role="alert">{{ booking.status }}</span></li>
+    {% endif %}
+</ul><br>
+<form method="POST" action="{% url 'accept_detail' booking.book_id %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="end" class="col-sm-9">ระบุเหตุผลในการอนุมัติ/ปฏิเสธ</label>
+        <textarea class="form-control" cols="50" rows="10" aria-label="With textarea" name="description"></textarea><br>
+        <button type="submit" name="action" class="btn btn-success" value="accept">อนุมัติ</button>
+        <button type="submit" name="action" class="btn btn-danger" value="decline">ปฏิเสธ</button>
+    </div>
+</form>
+{% endblock  %}

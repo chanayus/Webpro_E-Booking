@@ -1,0 +1,65 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Booking</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <link href="https://fonts.googleapis.com/css?family=Mitr&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  {% load static %}
+   
+  <style>
+    body {
+      background-image: url("{% static 'login.jpg' %}");
+      font-family: 'Mitr';
+    }
+    label, h1{
+      color: #fff;
+    }
+    button, a{
+      width: 100%;
+    }
+  </style>
+  {% block content %}
+
+  <div class="container h-100 d-flex justify-content-center">
+    <div class="jumbotron my-auto" style="background:#222; border: 2px solid #FFF; border-radius: 10px; width:45%;">
+   
+      <form method="POST" action="{% url 'login' %}">
+        <center><h1>E-Booking System</h1><br></center> 
+        {% csrf_token %}
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+          <p style="margin:0;">{{ error }}</p>
+        </div>
+        {% endif %}
+        <div class="form-group">
+          <label for="exampleInputEmail1">Username</label>
+          <input type="text" class="form-control" placeholder="Enter Username" name="username">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" placeholder="Password" name="password">
+        </div><br>
+        <button type="submit" class="btn btn-primary" value="login">Log in</button><br><br>
+        <a href="{% url 'register' %}" class="btn btn-success">register</a>
+      </form>
+    </div>
+  </div>
+  {% endblock  %}
+</body>
+
+</html>

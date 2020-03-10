@@ -1,0 +1,59 @@
+{% extends "authen/login.html" %}
+{% load static %}
+{% block content %}
+
+
+<div class="container h-100 d-flex justify-content-center">
+  <div class="jumbotron my-auto" style="background:#222; border: 2px solid #FFF; border-radius: 10px; width:55%;">
+    <center>
+      <h1>Register</h1><br>
+    </center>
+
+    {% if success %}
+    <div class="alert alert-success" role="alert">
+      <p style="margin:0;">{{ success }}</p>
+    </div>
+    {% endif %}
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+      <p style="margin:0;">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="{% url 'register' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" placeholder="Enter Username" name="username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" class="form-control" placeholder="Confirm Password" name="confirm">
+      </div><br>
+
+      <div class="row">
+        <div class="col-sm">
+          <label>Firstname</label>
+          <input type="text" class="form-control" placeholder="Firstname" name="firstname">
+        </div>
+        <div class="col-sm">
+          <label>Lastname</label>
+          <input type="text" class="form-control" placeholder="Lastname" name="lastname">
+        </div>
+      </div><br>
+      <div class="form-group">
+        <label>Lastname</label>
+        <input type="text" class="form-control" placeholder="example@hotmail.com" name="lastname">
+      </div><br>
+
+      <button type="submit" class="btn btn-success" style="margin-bottom: 20px;">Register</button><br>
+      <a href="{% url 'login' %}" class="btn btn-primary">Go To Log in</a>
+
+    </form>
+  </div>
+</div>
+{% endblock  %}

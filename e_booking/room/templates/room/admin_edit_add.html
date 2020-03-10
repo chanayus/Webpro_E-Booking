@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>เพิ่ม/แก้ไข ห้อง</h1>
+{% if success %}
+  <div class="alert alert-success" role="alert">
+    <p style="margin:0;">{{ success }}</p>
+  </div>
+{% endif %}
+{% if check %}
+    <form method="POST" action="{% url 'edit_add' room.room_id %}">
+{% else %}
+    <form method="POST" action="{% url 'edit_add' 0 %}">
+{% endif %}
+
+<h1>{{ success }}</h1>
+{% csrf_token %}
+    <div class="form-row">
+        <div class="col">
+            <label for="end" class="col-sm-6 col-form-label">ชื่อห้อง</label>
+            <input type="text" class="form-control" placeholder="ชื่อห้อง" name="roomname" value="{{ room.name }}">
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="end" class="col-sm-6 col-form-label">ตั้งแต่เวลา</label>
+            <input type="text" class="form-control" placeholder="ตั้งแต่เวลา" name="start" value="{{ room.open_time|time:'h:i' }}">
+        </div>
+
+        <div class="col">
+            <label for="end" class="col-sm-6 col-form-label">ถึงเวลา</label>
+            <input type="text" class="form-control" placeholder="ถึงเวลา" name="end" value="{{ room.close_time|time:'h:i' }}">
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label for="end" class="col-sm-9 col-form-label">จำนวนความจุห้อง</label>
+            <input type="text" class="form-control" placeholder="ความจุห้อง (คน)" name="capacity" value="{{ room.capacity }}">
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+    <br><br><button type="submit" class="btn btn-success mb-5"  style="width: 120px;">บันทึก</button><br><br>
+</form>
+{% endblock %}

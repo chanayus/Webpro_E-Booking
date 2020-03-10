@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>การอนุมัติ</h1><br>
+<table class="table" style="text-align: center;">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ชื่อห้อง</th>
+      <th scope="col">วันที่ขอจอง</th>
+      <th scope="col">เวลาที่ขอจอง</th>
+      <th scope="col">เวลาว่างของห้อง</th>
+      <th scope="col">สถานะ</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in booking %}
+    <tr>
+      <td>{{ b.room.name }}</th>
+      <td>{{ b.date|date:'d M Y' }}</td>
+      <td>{{ b.start_time|time:'H:i' }} น. - {{ b.end_time|time:'H:i' }} น.</td>
+      <td>{{ b.room.open_time|time:'H:i' }} น. - {{ b.room.close_time|time:'H:i' }} น.</td>
+      
+      {% if b.status == 'อนุมัติ' %}
+        <td><div class="alert alert-success" style="height: 30px; padding: 0; padding-top: 3px;" role="alert">{{ b.status }}</div></td>
+      {% elif b.status == 'ปฏิเสธ' %}
+        <td><div class="alert alert-danger" style="height: 30px; padding: 0; padding-top: 3px;" role="alert">{{ b.status }}</div></td>
+      {% else %}
+        <td><div class="alert alert-warning" style="height: 30px; padding: 0; padding-top: 3px;" role="alert">{{ b.status }}</div></td>
+      {% endif %}
+      <td style="width:10%;">
+        <a href="{% url 'accept_detail' b.book_id %}" class="btn btn-info">ดูรายละเอียด</a>
+      </td>
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock  %}

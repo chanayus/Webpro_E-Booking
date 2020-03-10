@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+
+    <h1>ชื่อห้อง : {{ room.name }}</h1><br>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        <p style="margin:0;">{{ error }}</p>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-4" style="border: 2px solid #111; height: 250px; border-radius: 10px; margin-right: 10px;">
+            <h4>รายละเอียด</h4>
+            <ul>
+                <li>ชื่อห้อง : {{ room.name }}</li>
+                <li>เวลาเปิด : {{ room.open_time|time:'H:i' }} น.</li>
+                <li>เวลาปิด : {{ room.close_time|time:'H:i' }} น.</li>
+                <li>ความจุห้อง : {{ room.capacity }} คน</li>
+            </ul>
+        </div>
+        <div class="col-sm-7" style="border: 2px solid #111; border-radius: 10px;">
+            <br>
+            <h3>ขอจองห้อง</h3>
+            <form method="POST" action="{% url 'detail' room.room_id %}">
+                {% csrf_token %}
+                <div class="form-row ml-2">
+                    <div class="form-group">
+                        <label>วันที่จอง</label>
+                        <input type="date" name="day" max="3000-12-31" min="{% now 'Y' %}-01-01" class="form-control">
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="form-row ml-2">
+                    <div class="form-group" style="margin-right: 50px">
+                        <label for="end" class="col-sm-6 col-form-label">ตั้งแต่เวลา</label>
+                        <input id="timepicker" width="276" class="form-control" placeholder="ตั้งแต่เวลา"
+                            name="start" style="border:1px solid #000"/>
+                        <script>
+                            $('#timepicker').timepicker({
+                                uiLibrary: 'bootstrap4',
+                                format: 'HH:MM',
+                                pickDate: false
+                            });
+                        </script>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end" class="col-sm-6 col-form-label">ถึงเวลา</label>
+                        <input id="timepicker2" width="276" class="form-control" placeholder="ถึงเวลา" id="end"
+                            name="end" />
+                        <script>
+                            $('#timepicker2').timepicker({
+                                uiLibrary: 'bootstrap4',
+                                format: 'HH:MM',
+                                pickDate: false
+                            });
+                        </script>
+                    </div>
+                    <div class="form-group">
+                        <label for="end" class="col-sm-9">เหตุผลการใช้งาน</label>
+                        <textarea class="form-control" cols="50" rows="10" aria-label="With textarea"
+                            name="description"></textarea>
+                    </div>
+                </div>
+                <div class="form-row ml-2">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success mb-5">จองห้อง</button><br><br>
+                        <br>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br><br>
+</div>
+
+{% endblock  %}
