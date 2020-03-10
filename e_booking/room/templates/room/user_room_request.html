@@ -3,7 +3,7 @@
 {% block content %}
 <h1>รายการคำร้อง</h1><br>
 <table class="table" style="text-align: center;">
-  <thead class="thead-dark">
+  <thead style="background: #333;">
     <tr>
       <th scope="col">ชื่อห้อง</th>
       <th scope="col">วันที่ขอจอง</th>
@@ -20,11 +20,11 @@
       <td>{{ b.start_time|time:'H:i' }} น. - {{ b.end_time|time:'H:i' }} น.</td>
       <td>{{ b.room.open_time|time:'H:i' }} น. - {{ b.room.close_time|time:'H:i' }} น.</td>
       {% if b.status == 'อนุมัติ' %}
-        <td><div class="alert alert-success" style="height: 30px; padding: 0; padding-top: 3px;" role="alert">{{ b.status }}</div></td>
+        <td><div class="bg-success" style="height: 30px; padding: 0; padding-top: 2px; border-radius:15px;" role="alert">{{ b.status }}</div></td>
       {% elif b.status == 'ปฏิเสธ' %}
-        <td><div class="alert alert-danger" style="height: 30px; padding: 0; padding-top: 3px;" role="alert">{{ b.status }}</div></td>
+        <td><div class="bg-danger" style="height: 30px; padding: 0; padding-top: 2px; border-radius:50px;" role="alert">{{ b.status }}</div></td>
       {% else %}
-        <td><div class="alert alert-warning" style="height: 30px; padding: 0; padding-top: 3px;" role="alert">{{ b.status }}</div></td>
+        <td><div class="bg-warning" style="height: 30px; padding: 0; padding-top: 2px; color:#000; border-radius:15px;" role="alert">{{ b.status }}</div></td>
       {% endif %}
       
     </tr>
