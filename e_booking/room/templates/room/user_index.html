@@ -20,19 +20,18 @@
       <label>เวลาว่าง</label>
       <select class="form-control" id="time" name="time">
        <option selected value="">ค้นหาเวลาว่าง</option>
-        {% for r in room_all %}
+        {% for r in room_time %}
           <option value="{{ r.open_time|time:'H:i' }}-{{ r.close_time|time:'H:i' }}">{{ r.open_time|time:'H:i' }} น. - {{ r.close_time|time:'H:i' }} น.</option>
         {% endfor %}
       </select>
     </div>
     <button type="submit" value="Select" class="btn btn-primary ml-3"
-      style="margin-right: 50px; margin-top: 20px; width: 80px; height: 60px;">ค้นหา</button>
+      style="margin-right: 50px; margin-top: 20px; width: 90px; height: 60px;"><i class='fas fa-search' style='font-size:15px'></i> ค้นหา</button>
   </div>
 </form>
 
-
-<table class="table" style="text-align: center;">
-  <thead style="background: #444;">
+<table class="table">
+  <thead class="thead-dark">
     <tr>
       <th scope="col">ชื่อห้อง</th>
       <th scope="col">เวลาเปิด - ปิด</th>
@@ -44,10 +43,10 @@
     {% for r in room %}
     <tr>
       <td>{{ r.name }}</th>
-      <td>{{ r.open_time|time:'H:i' }} น. - {{ r.close_time|time:'H:i' }} น.</td>
+      <td>{{ r.open_time|time:'H:i:' }} น. - {{ r.close_time|time:'H:i' }} น.</td>
       <td>{{ r.capacity }} คน</td>
       <td style="width:10%;">
-        <a href="{% url 'detail' r.room_id %}" class="btn btn-warning">ดูรายละเอียด</a>
+        <a href="{% url 'detail' r.room_id %}" style="width:120px;" class="btn btn-warning">ดูรายละเอียด</a>
       </td>
     </tr>
     {% endfor %}

@@ -29,9 +29,8 @@
         <td><div class="bg-warning" style="height: 30px; padding: 0; padding-top: 2px; color:#000; border-radius:15px;" role="alert">{{ b.status }}</div></td>
       {% endif %}
       <td style="width:10%;">
-        <a href="{% url 'accept_detail' b.book_id %}" class="btn btn-info">ดูรายละเอียด</a>
-      </td>
-      
+        <a href="{% url 'accept_detail' b.book_id %}" style="width:120px;" class="btn btn-info">ดูรายละเอียด</a>
+      </td> 
     </tr>
     {% endfor %}
   </tbody>

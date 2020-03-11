@@ -17,14 +17,24 @@ from room.models import Booking, Room
 @permission_required('room.add_booking')
 def index(request):
     context = {}
-    room_exclude = []
+    room_exclude = [] #เก็บ id ห้องที่มีการจ้องไว้แล้ว เพื่มนำไป exclude ออก
+
+    time_list = [] #เก็บเวลาเปิด/ปิดของห้องที่มี
+    time_id = [] #เก็บ id ของห้องเพื่อเอาไป filter
 
     room_txt = request.POST.get('room_name', '')
     day_txt = request.POST.get('day', '')
     time_txt = request.POST.get('time', '').split("-")
-    
+
     room = Room.objects.filter(name__icontains=room_txt)
-    
+   
+    # ดึงเวลาค่าเดียวในกรณีที่มีห้องเปิดเวลาเดียวกัน
+    for i in Room.objects.all(): 
+        time_str = str(i.open_time)+" - "+str(i.close_time) #แปลงเวลาเปิด/ปิด ของห้อง เป็น Str
+        if time_str not in time_list: #ถ้าค่าของไม่มีเวลาเปิด/ปิดห้อง ใน time_list ก็จะทำการเพิ่ม และ เพิ่ม id ของห้องใน time_id
+            time_list.append(time_str)
+            time_id.append(i.room_id)
+
     if request.method == "POST":
         if len(time_txt) != 1 and day_txt:
             # ดึงการจอง ที่มีค่าเท่ากับ ค่าที่ input จาก form
@@ -42,7 +52,7 @@ def index(request):
             room = room.filter(open_time=time_txt[0], close_time=time_txt[1])
             
     context['room'] = room
-    context['room_all'] = Room.objects.all()
+    context['room_time'] = Room.objects.filter(room_id__in=time_id)
 
     return render(request, 'room/user_index.html', context=context)
 
@@ -57,7 +67,7 @@ def detail(request, id):
 
     if request.method == "POST":
         day = request.POST.get('day')
-        #สร้างการจอง
+        # สร้างการจอง
         book = Booking(room_id=id, date=day, start_time=request.POST.get('start'), end_time=request.POST.get('end'), description=request.POST.get(
             'description'), book_by_id=request.user.id, status="รอการอนุมัติ", status_remark=None, book_date=date.today())
 
@@ -65,12 +75,12 @@ def detail(request, id):
         end = datetime.strptime(book.end_time, '%H:%M').time()
         print()
 
-        #เช็คว่าห้องที่จะจอง มีการจองแล้วหรือยัง
+        # เช็คว่าห้องที่จะจอง มีการจองแล้วหรือยัง
         booking = Booking.objects.filter(date=day, room_id=id) 
         if booking:
             context['error'] = 'ห้องนี้มีการจองแล้ว'
 
-        #เช็คว่าเวลาที่จองห้องอยู่ในช่วงเวลา เปิด-ปิด ของห้องหรือไม่
+        # เช็คว่าเวลาที่จองห้องอยู่ในช่วงเวลา เปิด-ปิด ของห้องหรือไม่
         elif start >= room.open_time and end <= room.close_time:
             book.save()
 
@@ -114,7 +124,7 @@ def edit_add(request, id):
     if id > 0:  
         room = Room.objects.get(pk=id)
         context = {
-            'room': Room.objects.get(pk=id),
+            'room': room,
             'check': 'check'
         }
         if request.method == "POST":
@@ -124,10 +134,7 @@ def edit_add(request, id):
             room.close_time = request.POST.get('end')
             room.capacity = request.POST.get('capacity')
             room.save()
-            context['success'] = 'บันทึกข้อมูลเสร็จสมบูรณ์'
-            print('pass')
-            print(context)
-            return redirect(request.path_info)
+            return redirect('manage')
 
     # ถ้า id = 0 เข้าเงื่อนไขการสร้างห้องใหม่
     else:     
@@ -135,9 +142,8 @@ def edit_add(request, id):
             new_room = Room(name=request.POST.get('roomname'), open_time=request.POST.get(
                 'start'), close_time=request.POST.get('end'), capacity=request.POST.get('capacity'))
             new_room.save()
-            context['success'] = 'บันทึกข้อมูลเสร็จสมบูรณ์'
             return redirect('manage')
-
+    
     return render(request, 'room/admin_edit_add.html', context=context)
 
 
@@ -170,7 +176,6 @@ def accept_detail(request, id):
     context['booking'] = book
     context['user_book'] = user
 
-        
     if request.method == "POST":
         if request.POST.get('action') == 'accept':
             book.status_remark = request.POST.get('description')

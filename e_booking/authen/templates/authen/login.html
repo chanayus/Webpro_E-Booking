@@ -1,5 +1,5 @@
-
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,47 +16,63 @@
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
   <link href="https://fonts.googleapis.com/css?family=Mitr&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
 </head>
 
 <body>
   {% load static %}
-   
+
   <style>
     body {
-      background-image: url("{% static 'login.jpg' %}");
-      font-family: 'Mitr';
+      background-image: url("{% static 'authen/login.jpg' %}");
+      font-family: 'Raleway', 'Mitr';
     }
-    label, h1{
+
+    label,
+    h1 {
       color: #fff;
+      
     }
-    button, a{
+
+    button,
+    a {
       width: 100%;
+      
     }
   </style>
   {% block content %}
 
   <div class="container h-100 d-flex justify-content-center">
-    <div class="jumbotron my-auto" style="background:#222; border: 2px solid #FFF; border-radius: 10px; width:45%;">
-   
-      <form method="POST" action="{% url 'login' %}">
-        <center><h1>E-Booking System</h1><br></center> 
-        {% csrf_token %}
-        {% if error %}
-        <div class="alert alert-danger" role="alert">
-          <p style="margin:0;">{{ error }}</p>
+    <div class="jumbotron my-auto" style="background:#222; border: 2px solid #FFF; border-radius: 10px; width:100%;">
+      <div class="row">
+        <div class="col-sm"style="margin:auto;">
+            <center>
+              <h1 style="font-family: 'Raleway', sans-serif; font-style: italic">E-Booking System</h1><br>
+            </center>
         </div>
-        {% endif %}
-        <div class="form-group">
-          <label for="exampleInputEmail1">Username</label>
-          <input type="text" class="form-control" placeholder="Enter Username" name="username">
+        <div class="col-sm">
+          <form method="POST" action="{% url 'login' %}">
+            <h1>Log in</h1><br>
+            {% csrf_token %}
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+              <p style="margin:0;">{{ error }}</p>
+            </div>
+            {% endif %}
+            <div class="form-group">
+              <label for="exampleInputEmail1">Username</label>
+              <input type="text" class="form-control" placeholder="Enter Username" name="username">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" placeholder="Password" name="password">
+            </div><br>
+            <button type="submit" class="btn btn-primary" value="login">Log in</button><br><br>
+            <a href="{% url 'register' %}" class="btn btn-success">register</a>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" placeholder="Password" name="password">
-        </div><br>
-        <button type="submit" class="btn btn-primary" value="login">Log in</button><br><br>
-        <a href="{% url 'register' %}" class="btn btn-success">register</a>
-      </form>
+      </div>
+
     </div>
   </div>
   {% endblock  %}
