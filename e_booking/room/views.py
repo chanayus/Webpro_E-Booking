@@ -39,7 +39,7 @@ def index(request):
         if len(time_txt) != 1 and day_txt:
             # ดึงการจอง ที่มีค่าเท่ากับ ค่าที่ input จาก form
             booking = Booking.objects.filter(date=day_txt, start_time__gte=datetime.strptime(
-                time_txt[0], '%H:%M').time(), end_time__gte=datetime.strptime(time_txt[0], '%H:%M').time())
+                time_txt[0], '%H:%M').time(), end_time__gte=datetime.strptime(time_txt[0], '%H:%M').time(), status__in=['รอการอนุมัติ', 'อนุมัติ'])
 
             # เก็บ id ของห้องที่มีการจองไว้ใน list
             for i in booking:
@@ -76,7 +76,7 @@ def detail(request, id):
         print()
 
         # เช็คว่าห้องที่จะจอง มีการจองแล้วหรือยัง
-        booking = Booking.objects.filter(date=day, room_id=id) 
+        booking = Booking.objects.filter(date=day, room_id=id, status__in=['รอการอนุมัติ', 'อนุมัติ']) 
         if booking:
             context['error'] = 'ห้องนี้มีการจองแล้ว'
 
