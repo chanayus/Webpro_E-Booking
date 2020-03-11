@@ -10,25 +10,60 @@
       <th scope="col">เวลาที่ขอจอง</th>
       <th scope="col"> เวลาเปิด/ปิดของห้อง </th>
       <th scope="col">สถานะ</th>
+      <th scope="col">คำอธิบายการอนุมัติ</th>
     </tr>
   </thead>
   <tbody>
-  {% for b in booking %}
+    {% for b in booking %}
     <tr>
       <td>{{ b.room.name }}</th>
       <td>{{ b.date|date:'d M Y' }}</td>
       <td>{{ b.start_time|time:'H:i' }} น. - {{ b.end_time|time:'H:i' }} น.</td>
       <td>{{ b.room.open_time|time:'H:i' }} น. - {{ b.room.close_time|time:'H:i' }} น.</td>
       {% if b.status == 'อนุมัติ' %}
-        <td><div class="bg-success" style="height: 30px; padding: 0; padding-top: 2px; border-radius:15px;" role="alert">{{ b.status }}</div></td>
+      <td>
+        <div class="bg-success" style="height: 30px; padding: 0; padding-top: 2px; border-radius:15px;" role="alert">
+          {{ b.status }}</div>
+      </td>
       {% elif b.status == 'ปฏิเสธ' %}
-        <td><div class="bg-danger" style="height: 30px; padding: 0; padding-top: 2px; border-radius:50px;" role="alert">{{ b.status }}</div></td>
+      <td>
+        <div class="bg-danger" style="height: 30px; padding: 0; padding-top: 2px; border-radius:50px;" role="alert">
+          {{ b.status }}</div>
+      </td>
       {% else %}
-        <td><div class="bg-warning" style="height: 30px; padding: 0; padding-top: 2px; color:#000; border-radius:15px;" role="alert">{{ b.status }}</div></td>
+      <td>
+        <div class="bg-warning" style="height: 30px; padding: 0; padding-top: 2px; color:#000; border-radius:15px;"
+          role="alert">{{ b.status }}</div>
+      </td>
       {% endif %}
-      
+      <td>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+          ดูคำอธิบาย
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="color:#000">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">คำอธิบายการอนุมัติ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                {{ b.status_remark }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
     </tr>
-  {% endfor %}
+    {% endfor %}
   </tbody>
 </table>
 
