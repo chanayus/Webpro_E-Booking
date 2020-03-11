@@ -69,7 +69,7 @@ def detail(request, id):
         day = request.POST.get('day')
         # สร้างการจอง
         book = Booking(room_id=id, date=day, start_time=request.POST.get('start'), end_time=request.POST.get('end'), description=request.POST.get(
-            'description'), book_by_id=request.user.id, status="รอการอนุมัติ", status_remark=None, book_date=date.today())
+            'description'), book_by_id=request.user.id, status="รอการอนุมัติ", status_remark="รอการอนุมัติ", book_date=date.today())
 
         start = datetime.strptime(book.start_time, '%H:%M').time()
         end = datetime.strptime(book.end_time, '%H:%M').time()
